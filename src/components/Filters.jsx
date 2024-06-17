@@ -20,7 +20,6 @@ const FilterBtns = () => {
         pestle: '',
         source: '',
         country: '',
-
     });
 
     useEffect(() => {
@@ -34,7 +33,6 @@ const FilterBtns = () => {
                 const uniquePestles = [...new Set(response.data.map(item => item.pestle))];
                 const uniqueSources = [...new Set(response.data.map(item => item.source))];
                 const uniqueCountries = [...new Set(response.data.map(item => item.country))];
-                // const uniqueCities = [...new Set(response.data.map(item => item.city))];
 
                 setYears(uniqueYears);
                 setTopics(uniqueTopics);
@@ -43,8 +41,6 @@ const FilterBtns = () => {
                 setPestles(uniquePestles);
                 setSources(uniqueSources);
                 setCountries(uniqueCountries);
-                // setCities(uniqueCities);
-
                 setData(response.data);
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -52,7 +48,7 @@ const FilterBtns = () => {
         };
 
         fetchData();
-    }, []); // Empty dependency array to run the effect only once on component mount
+    }, []);
 
     const handleFilterChange = (e) => {
         const { id, value, type, checked } = e.target;
@@ -83,59 +79,81 @@ const FilterBtns = () => {
             console.error('Error fetching filtered data:', error);
         }
     };
+
     return (
-        <div>
-            <label htmlFor="endYear">End Year:</label>
-            <select id="endYear" onChange={handleFilterChange}>
-                <option value="">All</option>
-                {years && years.map(year => <option key={year} value={year}>{year}</option>)}
-            </select>
+        <div className="flex flex-col p-6 bg-gray-50 rounded-lg shadow-md">
+            <div className="mb-6">
+                <label htmlFor="endYear" className="block text-sm font-medium text-gray-700">End Year:</label>
+                <select id="endYear" onChange={handleFilterChange} className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-700">
+                    <option value="">All</option>
+                    {years && years.map(year => <option key={year} value={year}>{year}</option>)}
+                </select>
+            </div>
 
-            <label>Topics:</label>
-            {topics && topics.map(topic => (
-                <div key={topic}>
-                    <input type="checkbox" id={`topic_${topic}`} name="topic" value={topic} onChange={handleFilterChange} />
-                    <label htmlFor={`topic_${topic}`}>{topic}</label>
+            <div className="mb-6">
+                <label className="block text-md font-medium  text-gray-900">Topics:</label>
+                <div className="space-y-2">
+                    {topics && topics.map(topic => (
+                        <div key={topic} className="flex items-center">
+                            <input type="checkbox" id={`topic_${topic}`} name="topic" value={topic} onChange={handleFilterChange} className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" />
+                            <label htmlFor={`topic_${topic}`} className="ml-2 block text-sm text-gray-900">{topic}</label>
+                        </div>
+                    ))}
                 </div>
-            ))}
+            </div>
 
-            <label htmlFor="sector">Sector:</label>
-            <select id="sector" onChange={handleFilterChange}>
-                <option value="">All</option>
-                {sectors && sectors.map(sector => <option key={sector} value={sector}>{sector}</option>)}
-            </select>
+            <div className="mb-6">
+                <label htmlFor="sector" className="block text-sm font-medium text-gray-700">Sector:</label>
+                <select id="sector" onChange={handleFilterChange} className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-700">
+                    <option value="">All</option>
+                    {sectors && sectors.map(sector => <option key={sector} value={sector}>{sector}</option>)}
+                </select>
+            </div>
 
-            <label htmlFor="region">Region:</label>
-            <select id="region" onChange={handleFilterChange}>
-                <option value="">All</option>
-                {regions && regions.map(region => <option key={region} value={region}>{region}</option>)}
-            </select>
+            <div className="mb-6">
+                <label htmlFor="region" className="block text-sm font-medium text-gray-700">Region:</label>
+                <select id="region" onChange={handleFilterChange} className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-700">
+                    <option value="">All</option>
+                    {regions && regions.map(region => <option key={region} value={region}>{region}</option>)}
+                </select>
+            </div>
 
-            <label htmlFor="pestle">PESTLE:</label>
-            <select id="pestle" onChange={handleFilterChange}>
-                <option value="">All</option>
-                {pestles && pestles.map(pestle => <option key={pestle} value={pestle}>{pestle}</option>)}
-            </select>
+            <div className="mb-6">
+                <label htmlFor="pestle" className="block text-sm font-medium text-gray-700">PESTLE:</label>
+                <select id="pestle" onChange={handleFilterChange} className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-700">
+                    <option value="">All</option>
+                    {pestles && pestles.map(pestle => <option key={pestle} value={pestle}>{pestle}</option>)}
+                </select>
+            </div>
 
-            <label htmlFor="source">Source:</label>
-            <select id="source" onChange={handleFilterChange}>
-                <option value="">All</option>
-                {sources && sources.map(source => <option key={source} value={source}>{source}</option>)}
-            </select>
+            <div className="mb-6">
+                <label htmlFor="source" className="block text-sm font-medium text-gray-700">Source:</label>
+                <select id="source" onChange={handleFilterChange} className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-700">
+                    <option value="">All</option>
+                    {sources && sources.map(source => <option key={source} value={source}>{source}</option>)}
+                </select>
+            </div>
 
-            <label htmlFor="country">Country:</label>
-            <select id="country" onChange={handleFilterChange}>
-                <option value="">All</option>
-                {countries && countries.map(country => <option key={country} value={country}>{country}</option>)}
-            </select>
+            <div className="mb-6">
+                <label htmlFor="country" className="block text-sm font-medium text-gray-700">Country:</label>
+                <select id="country" onChange={handleFilterChange} className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-700">
+                    <option value="">All</option>
+                    {countries && countries.map(country => <option key={country} value={country}>{country}</option>)}
+                </select>
+            </div>
 
-            {/* <label htmlFor="city">City:</label>
-            <select id="city" onChange={handleFilterChange}>
-                <option value="">All</option>
-                {cities && cities.map(city => <option key={city} value={city}>{city}</option>)}
-            </select> */}
+            {/* Uncomment this section if cities are to be included again.
+            <div className="mb-6">
+                <label htmlFor="city" className="block text-sm font-medium text-gray-700">City:</label>
+                <select id="city" onChange={handleFilterChange} className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-700">
+                    <option value="">All</option>
+                    {cities && cities.map(city => <option key={city} value={city}>{city}</option>)}
+                </select>
+            </div>
+            */}
 
-            <button onClick={handleSubmit}>Submit</button>
+            <button onClick={handleSubmit} className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Submit</button>
+
             <Dashboard selectedFilters={selectedFilters} />
         </div>
     );

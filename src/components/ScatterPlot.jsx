@@ -6,7 +6,6 @@ const ScatterPlot = ({ data }) => {
         // Clear previous content
         d3.select('#scatterPlot').selectAll('*').remove();
 
-        // Set up chart dimensions
         const width = 400;
         const height = 300;
         const margin = { top: 20, right: 20, bottom: 30, left: 40 };

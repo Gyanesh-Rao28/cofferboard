@@ -2,15 +2,16 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Bar, Doughnut, Line } from 'react-chartjs-2';
 import * as d3 from 'd3';
-import styles from "./dashboard.module.css"
 import "chart.js/auto";
 
 const Dashboard = () => {
     const [data, setData] = useState([]);
+
     const [countries, setCountries] = useState([]);
     const [sectors, setSectors] = useState([]);
     const [topics, setTopics] = useState([]);
     const [years, setYears] = useState([]);
+
     const [selectedCountry, setSelectedCountry] = useState('');
     const [selectedSector, setSelectedSector] = useState('');
     const [selectedTopic, setSelectedTopic] = useState('');
@@ -71,26 +72,20 @@ const Dashboard = () => {
 
     const chartOptionsIntensity = {
         scales: {
-            xAxes: [
-                {
-                    type: 'category',
-                    scaleLabel: {
-                        display: true,
-                        labelString: 'Likelihood',
-                    },
+            x: {
+                type: 'category',
+                title: {
+                    display: true,
+                    text: 'Likelihood',
                 },
-            ],
-            yAxes: [
-                {
-                    scaleLabel: {
-                        display: true,
-                        labelString: 'Intensity',
-                    },
-                    ticks: {
-                        beginAtZero: true,
-                    },
+            },
+            y: {
+                title: {
+                    display: true,
+                    text: 'Intensity',
                 },
-            ],
+                beginAtZero: true,
+            },
         },
         plugins: {
             legend: {
@@ -199,26 +194,20 @@ const Dashboard = () => {
 
     const chartOptionsCountry = {
         scales: {
-            xAxes: [
-                {
-                    type: 'category',
-                    scaleLabel: {
-                        display: true,
-                        labelString: 'Country',
-                    },
+            x: {
+                type: 'category',
+                title: {
+                    display: true,
+                    text: 'Country',
                 },
-            ],
-            yAxes: [
-                {
-                    scaleLabel: {
-                        display: true,
-                        labelString: 'Some Numeric Value',
-                    },
-                    ticks: {
-                        beginAtZero: true,
-                    },
+            },
+            y: {
+                title: {
+                    display: true,
+                    text: 'Some Numeric Value',
                 },
-            ],
+                beginAtZero: true,
+            },
         },
         plugins: {
             legend: {
@@ -259,18 +248,6 @@ const Dashboard = () => {
         },
     };
 
-    const topicYearData = topics.map(topic => {
-        return {
-            label: topic,
-            data: filteredData
-                .filter(entry => entry.topic === topic && entry.published)
-                .map(entry => ({
-                    x: entry.published.slice(0, 4),
-                    y: entry.someNumericValue,
-                })),
-        };
-    });
-
     const topicIntensityData = {
         labels: filteredData.map(entry => entry.topic),
         datasets: [
@@ -289,17 +266,17 @@ const Dashboard = () => {
             x: {
                 type: 'category',
                 position: 'bottom',
-                scaleLabel: {
+                title: {
                     display: true,
-                    labelString: 'Topic',
+                    text: 'Topic',
                 },
             },
             y: {
                 type: 'linear',
                 position: 'left',
-                scaleLabel: {
+                title: {
                     display: true,
-                    labelString: 'Intensity',
+                    text: 'Intensity',
                 },
             },
         },
@@ -316,56 +293,82 @@ const Dashboard = () => {
     };
 
     return (
-        <div>
-            <select onChange={(e) => setSelectedCountry(e.target.value)}>
-                {countries.map((country, index) => (
-                    <option key={index} value={country}>{country}</option>
-                ))}
-            </select>
+        <div className="flex h-screen">
+            <aside className="w-64 bg-white border-r border-gray-200">
+                <div className="p-4">
+                    <h2 className="text-xl font-semibold mb-4"><img
+                        src="https://blackcoffer.com/wp-content/uploads/2022/02/Blackcoffer-logo-new.png"
+                        alt="blackcoffer"
+                        width={"100%"}
+                    /></h2>
+                    <nav className="flex flex-col space-y-2">
+                        <a href="#" className="text-gray-600 hover:bg-gray-100 p-2 rounded">Dashboards</a>
+                        <a href="#" className="text-gray-600 hover:bg-gray-100 p-2 rounded">Analytics</a>
+                        <a href="#" className="text-gray-600 hover:bg-gray-100 p-2 rounded">Logistics</a>
+                        <a href="#" className="text-gray-600 hover:bg-gray-100 p-2 rounded">Settings</a>
+                        <a href="#" className="text-gray-600 hover:bg-gray-100 p-2 rounded">Preferences</a>
 
-            <select onChange={(e) => setSelectedSector(e.target.value)}>
-                {sectors.map((sector, index) => (
-                    <option key={index} value={sector}>{sector}</option>
-                ))}
-            </select>
+                    </nav>
+                </div>
+            </aside>
 
-            <select onChange={(e) => setSelectedTopic(e.target.value)}>
-                {topics.map((topic, index) => (
-                    <option key={index} value={topic}>{topic}</option>
-                ))}
-            </select>
+            <div className="flex-1 p-6 bg-gray-50">
+                <header className="flex items-center justify-between pb-6">
+                    <h1 className="text-2xl font-semibold">Dashboard</h1>
+                    <input type="date" className="border border-gray-300 p-2 rounded" />
+                </header>
 
-            <select onChange={(e) => setSelectedYear(e.target.value)}>
-                {years.map((year, index) => (
-                    <option key={index} value={year}>{year}</option>
-                ))}
-            </select>
-            <div className={styles.charts}>
-                <Bar className={styles.bar} data={chartDataIntensity} options={chartOptionsIntensity} />
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                    <select onChange={(e) => setSelectedCountry(e.target.value)} className="block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        {countries.map((country, index) => (
+                            <option key={index} value={country}>{country}</option>
+                        ))}
+                    </select>
 
-                <Doughnut className={styles.pie} data={chartDataRelevance} options={chartOptionsRelevance} />
+                    <select onChange={(e) => setSelectedSector(e.target.value)} className="block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        {sectors.map((sector, index) => (
+                            <option key={index} value={sector}>{sector}</option>
+                        ))}
+                    </select>
 
-                <div id="histogram-container" />
+                    <select onChange={(e) => setSelectedTopic(e.target.value)} className="block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        {topics.map((topic, index) => (
+                            <option key={index} value={topic}>{topic}</option>
+                        ))}
+                    </select>
 
-                <Bar
-                    data={chartDataCountry}
-                    options={chartOptionsCountry}
-                    height={200}
-                    style={{ marginBottom: '20px' }}
-                />
+                    <select onChange={(e) => setSelectedYear(e.target.value)} className="block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        {years.map((year, index) => (
+                            <option key={index} value={year}>{year}</option>
+                        ))}
+                    </select>
+                </div>
 
-                <Doughnut
-                    data={chartDataTopics}
-                    options={chartOptionsTopics}
-                    height={200}
-                    style={{ marginBottom: '20px' }}
-                />
+                <div className="bg-white p-4 rounded-lg shadow-lg">
+                    <Bar data={chartDataIntensity} options={chartOptionsIntensity} />
+                </div>
+                <div className="bg-white p-4 rounded-lg shadow-lg">
+                    <Doughnut data={chartDataRelevance} options={chartOptionsRelevance} />
+                </div>
 
-                <Line className={styles.line} data={topicIntensityData} options={topicIntensityOptions} height={200} />
+                <div className="bg-white p-4 rounded-lg shadow-lg mt-6">
+                    <div id="histogram-container" className="w-full h-64"></div>
+                </div>
+
+                <div className="bg-white p-4 rounded-lg shadow-lg mt-6">
+                    <Bar data={chartDataCountry} options={chartOptionsCountry} />
+                </div>
+
+                <div className="bg-white p-4 rounded-lg shadow-lg mt-6">
+                    <Doughnut data={chartDataTopics} options={chartOptionsTopics} />
+                </div>
+
+                <div className="bg-white p-4 rounded-lg shadow-lg mt-6">
+                    <Line data={topicIntensityData} options={topicIntensityOptions} />
+                </div>
             </div>
-
         </div>
     );
 }
 
-export default Dashboard
+export default Dashboard;
