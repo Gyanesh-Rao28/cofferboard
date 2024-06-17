@@ -1,0 +1,14 @@
+.bar {
+    width: 70vw !important;
+    height: 500px !important;
+}
+
+.pie {
+    width: 70vw !important;
+    height: 1000px !important;
+}
+
+.line {
+    width: 80vw !important;
+    height: 1000px !important;
+}
