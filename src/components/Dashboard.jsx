@@ -314,8 +314,7 @@ const Dashboard = () => {
 
             <div className="flex-1 p-6 bg-gray-50">
                 <header className="flex items-center justify-between pb-6">
-                    <h1 className="text-2xl font-semibold">Dashboard</h1>
-                    <input type="date" className="border border-gray-300 p-2 rounded" />
+                    <h1 className="text-3xl font-semibold">Dashboard</h1>
                 </header>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
